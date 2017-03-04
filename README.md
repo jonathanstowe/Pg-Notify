@@ -29,12 +29,15 @@ react {
 ## Description
 
 This provides a simple mechanism to get a supply of the PostgresQL notifications
-for a particular *channel*.  The supply will emit a stream of C<pg-notify> objects
+for a particular *channel*.  The supply will emit a stream of ```pg-notify``` objects
 corresponding to a ```NOTIFY``` executed on the connected Postgres database.
 
 Typically the ```NOTIFY``` will be invoked in a trigger or other server side code
 but could just as easily be in some other user code (as in the Synopsis above,)
 
+The objects of type ```Pg::Notify``` have a ```Supply``` method that allows coercion
+in places that expect a Supply (such as ```whenever``` in the Synopsis above.) but
+you can this Supply directly if you want to ```tap``` it for instance.
 
 ## Install
 
@@ -43,9 +46,9 @@ a working PostgreSQL database connection for the user that you will run the test
 
 For the tests you can control how it connects to the database with the environment variables:
 
-	*  $PG_NOTIFY_DB   - the name of the database you want to use, otherwise ```dbdishtest```
-	*  $PG_NOTIFY_USER - the username to be used, (otherwise will connect as the current user,)
-	*  $PG_NOTIFY_PASS - the password to be used, (otherwise no password will be used.)
+*  $PG_NOTIFY_DB   - the name of the database you want to use, otherwise ```dbdishtest```
+*  $PG_NOTIFY_USER - the username to be used, (otherwise will connect as the current user,)
+*  $PG_NOTIFY_PASS - the password to be used, (otherwise no password will be used.)
 
 These should be set before the tests (or install,) are run.
 
