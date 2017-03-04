@@ -12,6 +12,8 @@ class Pg::Notify {
 
     has Supplier $!supplier;
 
+    has Promise $!run-promise;
+
     class PollFD is repr('CStruct') {
         has int32 $.fd;
         has int16 $.events;
@@ -24,15 +26,17 @@ class Pg::Notify {
         $!supplier //= do {
             my $supplier = Supplier.new;
             self.listen;
+            $!run-promise = Promise.new;
             $!thread = Thread.start: :app_lifetime, {
                 loop {
-					self.poll-once;
+                    #last if $!run-promise.status ~~ Kept;
                     $!db.pg-consume-input;
                     if $!db.pg-notifies -> $not {
                         if $not.relname eq $!channel {
                             $supplier.emit: $not;
                         }
                     }
+					self.poll-once;
                 }
             }
             $supplier;
@@ -43,14 +47,21 @@ class Pg::Notify {
         my $fds = LinearArray[PollFD].new(1);
         $fds[0] = PollFD.new(fd => $!db.pg-socket,  events => 1, revents => 0);
         poll($fds.base, 1, -1);
-        $fds[0].revents;
+        my $rc = $fds[0].revents;
+        $fds.dispose;
+        $rc;
     }
 
 
-
     method listen() {
-        my $sth = $!db.prepare("LISTEN " ~ $!channel);
-        $sth.execute();
+        $!db.do("LISTEN " ~ $!channel);
+    }
+
+    method unlisten() {
+        $!db.do("UNLISTEN " ~ $!channel);
+        if $!run-promise {
+            $!run-promise.keep: True;
+        }
     }
 }
 
