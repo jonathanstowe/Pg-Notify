@@ -134,6 +134,14 @@ class Pg::Notify {
                     }
 					self.poll-once;
                 }
+
+                # Exceptions inside this block typically indicate some type
+                # of communications issue with the database.
+                CATCH {
+                    default {
+                        $supplier.quit($_);
+                    }
+                }
             }
             $supplier;
         }
