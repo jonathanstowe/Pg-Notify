@@ -12,6 +12,9 @@ my %args;
 %args<database> = %*ENV<PG_NOTIFY_DB> // 'dbdishtest';
 
 
+if %*ENV<PG_NOTIFY_HOST> -> $host {
+    %args<host> = $host;
+}
 if %*ENV<PG_NOTIFY_USER> -> $user {
     %args<user> = $user;
 }
