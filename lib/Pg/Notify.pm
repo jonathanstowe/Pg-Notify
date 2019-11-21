@@ -125,7 +125,9 @@ class Pg::Notify {
                 loop {
                     #last if $!run-promise.status ~~ Kept;
                     $!db.pg-consume-input;
-                    if $!db.pg-notifies -> $not {
+
+                    # Retrieve all pending notifications.
+                    while $!db.pg-notifies -> $not {
                         if $not.relname eq $!channel {
                             $supplier.emit: $not;
                         }
