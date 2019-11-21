@@ -36,7 +36,7 @@ react {
 =head1 DESCRIPTION
 
 This provides a simple mechanism to get a supply of the PostgresQL
-notifications for a particular channel. The supply will emit a stream
+notifications for a single or group of channels. The supply will emit a stream
 of pg-notify objects corresponding to a NOTIFY executed on the connected
 Postgres database.
 
@@ -53,13 +53,14 @@ instance.
 
 =head2 method new
 
-    method new(DBDish::Pg::Connection :$db, Str :$channel)
+    method new(DBDish::Pg::Connection :$db, Str :@channel)
 
 Both parameters are required. C<$db> should be the result of a
-C<DBIish.connect> to a Postgres database,  C<$channel> should be
-the name of the NOTIFY topic that you want to receive.  If you
-want to receive notifications for another topic you should
-create another Pg::Notify.
+C<DBIish.connect> to a Postgres database,  C<@channel> should be
+a list of NOTIFY topics that you want to receive.
+
+Using multiple Pg::Notify on the same DB connection may result in
+lost notifications.
 
 =head2 method Supply
 
@@ -100,7 +101,7 @@ to create a new object.
 
 class Pg::Notify {
     has DBDish::Pg::Connection  $.db      is required;
-    has Str                     $.channel is required;
+    has Str                     @.channel is required;
 
     has $!thread;
 
@@ -123,12 +124,11 @@ class Pg::Notify {
             $!run-promise = Promise.new;
             $!thread = Thread.start: :app_lifetime, {
                 loop {
-                    #last if $!run-promise.status ~~ Kept;
                     $!db.pg-consume-input;
 
                     # Retrieve all pending notifications.
                     while $!db.pg-notifies -> $not {
-                        if $not.relname eq $!channel {
+                        if @!channel.contains($not.relname) {
                             $supplier.emit: $not;
                         }
                     }
@@ -150,11 +150,15 @@ class Pg::Notify {
 
 
     method listen() {
-        $!db.do("LISTEN " ~ $!channel);
+        for @!channel -> $channel {
+            $!db.do("LISTEN " ~ $channel);
+        }
     }
 
     method unlisten() {
-        $!db.do("UNLISTEN " ~ $!channel);
+        for @!channel -> $channel {
+            $!db.do("UNLISTEN " ~ $channel);
+        }
         if $!run-promise {
             $!run-promise.keep: True;
         }
