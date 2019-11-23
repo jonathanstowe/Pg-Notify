@@ -1,6 +1,6 @@
 {
   "name": "Pg::Notify",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "auth": "github:jonathanstowe",
   "api" : "1.0",
   "description": "Reactive interface to PostgreSQL notifies",
@@ -11,6 +11,7 @@
     "bugtracker": "https://github.com/jonathanstowe/Pg-Notify/issues"
   },
   "perl": "6.*",
+  "raku": "6.*",
   "resources": [ ],
   "build-depends": [ ],
   "depends": [
@@ -32,5 +33,5 @@
   "authors": [
     "Jonathan Stowe <jns+gh@gellyfish.co.uk>"
   ],
-  "meta-version": "0"
+  "meta-version": "1"
 }

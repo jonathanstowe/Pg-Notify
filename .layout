@@ -2,15 +2,15 @@
   "type": "layout",
   "children": [
     {
+      "type": "directory",
+      "purpose": "examples",
       "name": "example",
       "children": [
         {
           "name": "synopsis",
           "type": "file"
         }
-      ],
-      "type": "directory",
-      "purpose": null
+      ]
     },
     {
       "children": [
@@ -25,11 +25,15 @@
         {
           "name": "010-notify.t",
           "type": "file"
+        },
+        {
+          "name": "020-notify-multichannel.t",
+          "type": "file"
         }
       ],
       "type": "directory",
       "name": "t",
-      "purpose": null
+      "purpose": "tests"
     },
     {
       "type": "file",
@@ -37,9 +41,10 @@
     },
     {
       "name": "lib",
+      "type": "directory",
+      "purpose": "lib",
       "children": [
         {
-          "purpose": null,
           "children": [
             {
               "name": "Notify.pm",
@@ -47,11 +52,10 @@
             }
           ],
           "type": "directory",
+          "purpose": null,
           "name": "Pg"
         }
-      ],
-      "type": "directory",
-      "purpose": null
+      ]
     },
     {
       "name": "META6.json",
