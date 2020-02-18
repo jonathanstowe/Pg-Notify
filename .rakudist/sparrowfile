@@ -23,10 +23,13 @@ task-run "tasks/set-pg-user-password/", %(
 );
 
 my $dbname = "pg_notify_test";
+my $dbuser = "pg_notify_user";
+
+user $dbuser;
 
 bash "dropdb {$dbname}; createdb {$dbname} && echo db {$dbname} created", %(
   description => "create test database - {$dbname}",
-  user => $user
+  user => $dbuser
 );
 
 
