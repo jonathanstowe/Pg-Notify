@@ -22,14 +22,7 @@ task-run "tasks/set-pg-user-password/", %(
   password => "123"
 );
 
-file "/home/$user/.pgpass", %(
-  owner => $user,
-  group => $user ,
-  mode => '0600',
-  content => "*:*:*:$user:123"
-);
-
-my $dbname = "pg-notify";
+my $dbname = "pg_notify_test";
 
 bash "dropdb {$dbname}; createdb {$dbname} && echo db {$dbname} created", %(
   description => "create test database - {$dbname}",
