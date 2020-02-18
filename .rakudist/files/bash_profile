@@ -1,0 +1,2 @@
+export PG_NOTIFY_DB=pg_notify_test  # the name of the database you want to use, otherwise dbdishtest
+export PG_NOTIFY_PASS=123 # the password to be used, (otherwise no password will be used.)
