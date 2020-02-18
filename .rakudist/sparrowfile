@@ -5,7 +5,9 @@ my $dbuser = "notify_user";
 user $dbuser;
 
 package-install %(
-  debian => "postgresql"
+  debian => "postgresql",
+  alpine => "postgresql",
+  centos => "postgresql-server"
 );
 
 service-enable "postgresql";
