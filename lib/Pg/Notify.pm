@@ -128,7 +128,7 @@ class Pg::Notify {
 
                     # Retrieve all pending notifications.
                     while $!db.pg-notifies -> $not {
-                        if @!channel.contains($not.relname) {
+                        if @!channel (cont) $not.relname {
                             $supplier.emit: $not;
                         }
                     }
