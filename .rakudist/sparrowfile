@@ -1,6 +1,6 @@
 my $user = config()<user>;
-my $dbname = "pg_notify_test";
-my $dbuser = "pg_notify_user";
+my $dbname = "notify_test";
+my $dbuser = "notify_user";
 
 user $dbuser;
 
