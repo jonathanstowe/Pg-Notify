@@ -1,6 +1,42 @@
+my $user = config()<user>;
+
 package-install %(
   debian => "postgresql"
 );
 
 service-enable "postgresql";
 service-start "postgresql";
+
+
+bash 'psql -c "SELECT version();"', %(
+  description => "verify postgres installation",
+  user => 'postgres'
+);
+
+task-run "tasks/create-pg-user/", %(
+  user  => $user
+);
+
+task-run "tasks/set-pg-user-password/", %(
+  user  => $user,
+  password => "123"
+);
+
+file "/home/$user/.pgpass", %(
+  owner => $user,
+  group => $user ,
+  mode => '0600',
+  content => "*:*:*:$user:123"
+);
+
+my $dbname = "pg-notify";
+
+bash "dropdb {$dbname}; createdb {$dbname} && echo db {$dbname} created", %(
+  description => "create test database - {$dbname}",
+  user => $user
+);
+
+
+bash "cat files/bash_profile >> /home/$user/.bash_profile", %(
+  description => "patch user $user .bash_profile file"
+);
