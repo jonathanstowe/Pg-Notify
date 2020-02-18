@@ -1,0 +1,6 @@
+package-install %(
+  debian => "postgresql"
+);
+
+service-enable "postgresql";
+service-start "postgresql";
