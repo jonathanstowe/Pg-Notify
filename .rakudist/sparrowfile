@@ -6,8 +6,8 @@ user $dbuser;
 
 package-install %(
   debian => "postgresql",
-  alpine => "postgresql",
-  centos => "postgresql-server"
+  #alpine => "postgresql",
+  #centos => "postgresql-server"
 );
 
 service-enable "postgresql";
