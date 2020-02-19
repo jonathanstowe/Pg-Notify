@@ -1,0 +1,37 @@
+my $user = config()<user>;
+my $dbname = "notify_test";
+my $dbuser = "notify_user";
+
+user $dbuser;
+
+package-install %(
+  debian => "postgresql",
+  #alpine => "postgresql",
+  #centos => "postgresql-server"
+);
+
+service-enable "postgresql";
+service-start "postgresql";
+
+bash 'psql -c "SELECT version();"', %(
+  description => "verify postgres installation",
+  user => 'postgres'
+);
+
+task-run "tasks/create-pg-user/", %(
+  user  => $dbuser
+);
+
+task-run "tasks/set-pg-user-password/", %(
+  user  => $user,
+  password => "123"
+);
+
+bash "dropdb {$dbname}; createdb {$dbname} && echo db {$dbname} created", %(
+  description => "create test database - {$dbname}",
+  user => $dbuser
+);
+
+bash "cat files/bash_profile >> /home/$user/.bash_profile", %(
+  description => "patch user $user .bash_profile file"
+);
