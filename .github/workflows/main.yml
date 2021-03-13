@@ -48,8 +48,11 @@ jobs:
     - name: Install dependencies
       run: zef install --deps-only --/test --test-depends .
 
+    - name: Install prove6
+      run: zef install --deps-only --/test --test-depends App::Prove6
+
     - name: Run tests
-      run: zef test -v --debug .
+      run: prove6 -l -v t
       env: 
         PG_NOTIFY_HOST: postgres
         PG_NOTIFY_USER: postgres
