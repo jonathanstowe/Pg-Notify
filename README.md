@@ -53,13 +53,12 @@ environment variables:
 
 *  $PG_NOTIFY_DB   - the name of the database you want to use, otherwise ```dbdishtest```
 *  $PG_NOTIFY_USER - the username to be used, (otherwise will connect as the current user,)
-*  $PG_NOTIFY_PASS - the password to be used, (otherwise no password will be used.)
+*  $PG_NOTIFY_PW   - the password to be used, (otherwise no password will be used.)
 *  $PG_NOTIFY_HOST - the host to which the DB connection will made, the default is to connect to a local PG server.
 
 These should be set before the tests (or install,) are run.
 
-Assuming you have a working Rakudo installation you should just
-be able to use *zef* :
+Assuming you have a working Rakudo installation you should just be able to use *zef* :
 
 	zef install Pg::Notify
 
@@ -83,5 +82,5 @@ https://github.com/jonathanstowe/Pg-Notify/issues
 
 This is free software, please see the [LICENCE](LICENCE) file in the distribution.
 
-© Jonathan Stowe 2017 - 2020
+© Jonathan Stowe 2017 - 2021
 

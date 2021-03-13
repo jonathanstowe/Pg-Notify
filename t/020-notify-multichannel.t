@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use v6;
 
@@ -9,7 +9,7 @@ use DBIish;
 need  DBDish::Pg::Native;
 
 my %args;
-%args<database> = %*ENV<PG_NOTIFY_DB> // 'dbdishtest';
+%args<database> = %*ENV<PG_NOTIFY_DB> // 'postgres';
 
 if %*ENV<PG_NOTIFY_HOST> -> $host {
     %args<host> = $host;
@@ -60,4 +60,4 @@ else {
 }
 
 done-testing;
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku

@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    container:
+      image: rakudo-star:latest
+
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Update apt
+      run:  apt-get update
+
+    # Star has DBIish but only the SQLite native libraries
+    - name: Install native dependencies
+      run:  apt-get install -y postgresql-client libpq-dev
+
+    - name: Raku version
+      run: raku -v
+
+    - name: Install dependencies
+      run: zef install --deps-only --/test --test-depends .
+
+    - name: Run tests
+      run: zef test -v --debug .
+      env: 
+        PG_NOTIFY_HOST: postgres
+        PG_NOTIFY_USER: postgres
+        PG_NOTIFY_PW:   postgres
+        PG_NOTIFY_DB:   postgres
