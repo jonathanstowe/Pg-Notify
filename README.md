@@ -2,9 +2,11 @@
 
 Raku interface to PostgresQL notifies.
 
+![Build Status](https://github.com/jonathanstowe/Pg-Notify/workflows/CI/badge.svg)
+
 ## Synopsis
 
-```perl6
+```raku
 
 
 use Pg::Notify;
@@ -44,9 +46,8 @@ in the Synopsis above.) but you can this Supply directly if you want to
 
 ## Install
 
-This relies on [DBIish](https://github.com/perl6/DBIish) and ideally
-you will have a working PostgreSQL database connection for the user that
-you will run the tests as.
+This relies on [DBIish](https://github.com/raku-community-modules/DBIish) and ideally
+you will have a working PostgreSQL database connection for the user that you will run the tests as.
 
 For the tests you can control how it connects to the database with the
 environment variables:
