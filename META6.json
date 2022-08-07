@@ -1,37 +1,38 @@
 {
-  "name": "Pg::Notify",
-  "version": "0.0.6",
-  "auth": "github:jonathanstowe",
-  "api" : "1.0",
   "description": "Reactive interface to PostgreSQL notifies",
+  "raku": "6.*",
+  "license": "Artistic-2.0",
   "source-url": "https://github.com/jonathanstowe/Pg-Notify.git",
+  "test-depends": [
+    "DBIish"
+  ],
+  "authors": [
+    "Jonathan Stowe <jns+gh@gellyfish.co.uk>"
+  ],
+  "name": "Pg::Notify",
   "support": {
     "email": "jns+gh@gellyfish.co.uk",
-    "source": "https://github.com/jonathanstowe/Pg-Notify.git",
-    "bugtracker": "https://github.com/jonathanstowe/Pg-Notify/issues"
+    "bugtracker": "https://github.com/jonathanstowe/Pg-Notify/issues",
+    "source": "https://github.com/jonathanstowe/Pg-Notify.git"
   },
-  "perl": "6.*",
-  "raku": "6.*",
-  "resources": [ ],
-  "build-depends": [ ],
+  "api": "1.0",
+  "resources": [
+  ],
+  "version": "0.0.7",
+  "auth": "zef:jonathanstowe",
+  "build-depends": [
+  ],
   "depends": [
     "DBIish",
     "NativeHelpers::CStruct"
   ],
+  "meta-version": "1",
+  "provides": {
+    "Pg::Notify": "lib/Pg/Notify.pm"
+  },
   "tags": [
     "database",
     "postgres",
     "notification"
-  ],
-  "license": "Artistic-2.0",
-  "test-depends": [
-    "DBIish"
-  ],
-  "provides": {
-    "Pg::Notify": "lib/Pg/Notify.pm"
-  },
-  "authors": [
-    "Jonathan Stowe <jns+gh@gellyfish.co.uk>"
-  ],
-  "meta-version": "1"
+  ]
 }
