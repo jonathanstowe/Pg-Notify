@@ -18,7 +18,7 @@
   "api": "1.0",
   "resources": [
   ],
-  "version": "0.0.7",
+  "version": "0.0.8",
   "auth": "zef:jonathanstowe",
   "build-depends": [
   ],
@@ -28,7 +28,7 @@
   ],
   "meta-version": "1",
   "provides": {
-    "Pg::Notify": "lib/Pg/Notify.pm"
+    "Pg::Notify": "lib/Pg/Notify.rakumod"
   },
   "tags": [
     "database",

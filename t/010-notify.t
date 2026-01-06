@@ -25,33 +25,29 @@ if %*ENV<PG_NOTIFY_PW> -> $pw {
 my $db = try DBIish.connect('Pg', |%args);
 
 if $db {
-    my $channel = "test";
+    my $channel = "testchannel";
 
     my $notify = Pg::Notify.new(:$db, :$channel );
 
-    my $supply;
+    lives-ok { $notify.listen }, 'listen';
 
-
-    lives-ok { $supply = $notify.Supply }, "get the supply";
-    isa-ok $supply, Supply, "and it is a supply";
-
-    my $test-promise = Promise.new;
-
-    my $value;
-
-    $supply.act(-> $v { $value = $v; $test-promise.keep: True });
-
+    # we only want the middle one
+    $db.do("NOTIFY wrongchannel, 'Not Interested'");
     $db.do("NOTIFY $channel, 'TEST VALUE'");
-    await Promise.anyof($test-promise, Promise.in(1));
-    isa-ok $value, DBDish::Pg::Native::pg-notify;
-    is $value.extra, 'TEST VALUE', "got the right value";
-    is $value.relname, "test", "and got the right relname";
+    $db.do("NOTIFY otherchannel, 'Not Interested'");
 
-    $value = Any;
-    $test-promise = Promise.new;
-    $db.do("NOTIFY othername, 'TEST VALUE'");
-    await Promise.anyof($test-promise, Promise.in(1));
-    ok $test-promise.status ~~ Planned, "notify didn't fire with a different channel";
+    my $count = 1;
+    react {
+        whenever $notify -> $value {
+            isa-ok $value, DBDish::Pg::Native::pg-notify;
+            is $value.relname, $channel, "and got the right relname";
+            is $value.extra, "TEST VALUE", "got the right value";
+            done();
+        }
+        whenever Supply.interval(1) -> $v {
+            bail-out 'Timeout' if $v == 4;
+        }
+    }
 
     lives-ok { $notify.unlisten }, "unlisten";
 }

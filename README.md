@@ -83,5 +83,4 @@ https://github.com/jonathanstowe/Pg-Notify/issues
 
 This is free software, please see the [LICENCE](LICENCE) file in the distribution.
 
-© Jonathan Stowe 2017 - 2021
-
+© Jonathan Stowe 2017 - 2026

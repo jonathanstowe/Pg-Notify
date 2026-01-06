@@ -47,7 +47,7 @@
         {
           "children": [
             {
-              "name": "Notify.pm",
+              "name": "Notify.rakumod",
               "type": "file"
             }
           ],
